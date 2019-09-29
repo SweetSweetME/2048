@@ -9,23 +9,25 @@ import Row from '.././Row';
 import './index.less';
 
 export default class Board extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            cards: this.CARDS,
-            isPlaying: false,
-            spendTime: 0,
-            timer: null,
-            rank: 2048
-        };
-    }
 
     CARDS = [[0, 0, 0, 2], [0, 0, 0, 0], [0, 2, 0, 2], [0, 2, 0, 2]];
+
     RANK = {
         32: '极简',
         256: '简单',
         1024: '中度',
         2048: '困难'
+    }
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            cards: JSON.parse(JSON.stringify(this.CARDS)),
+            isPlaying: false,
+            spendTime: 0,
+            timer: null,
+            rank: 2048
+        };
     }
 
     beginGame = () => {
@@ -105,7 +107,6 @@ export default class Board extends Component {
                             j++; // j+1对应的值不用再和其他的判断 跨过去
                         } else if (arr[j + 1][i] === 0 && j + 2 <= len - 1 && arr[j][i] === arr[j + 2][i]) { // 中间是空格 也能加
                             arr[j][i] *= 2;
-                            console.log(arr[j + 2][i]);
                             arr[j + 2][i] = 0; // 下一个值置为0 不影响接下来的值判断 0也不影响
                             j += 2; // j-1对应的值不用再和其他的判断 跨过去
                         }
@@ -198,7 +199,7 @@ export default class Board extends Component {
                         alert('恭喜闯关成功！用时：' + spendTime + '秒');
                         clearInterval(timer);
                         this.setState({
-                            cards: this.CARDS,
+                            cards: JSON.parse(JSON.stringify(this.CARDS)),
                             isPlaying: !this.state.isPlaying
                         });
                         document.onkeyup = () => { };
